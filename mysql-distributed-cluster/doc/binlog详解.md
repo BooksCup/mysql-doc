@@ -18,4 +18,13 @@ show master status;
 ```
 | File | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
 | :--- | :--- | :--- | :--- | :--- |
-| mysql-bin.000001 | 154 |  |  |  |
+| mysql-bin.000001 | 154 |  |  |  |  
+
+每当我们重启mysql服务一次，会自动生成一个binlog文件，我们重启完毕之后执行相同的命令
+```mysql
+show master status;
+```
+| File | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
+| :--- | :--- | :--- | :--- | :--- |
+| mysql-bin.000002 | 154 |  |  |  |  
+存放binlog的目录下也多了这么一个文件。
