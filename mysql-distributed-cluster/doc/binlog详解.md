@@ -27,4 +27,5 @@ show master status;
 | File | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
 | :--- | :--- | :--- | :--- | :--- |
 | mysql-bin.000002 | 154 |  |  |  |  
+
 存放binlog的目录下也多了这么一个文件。
