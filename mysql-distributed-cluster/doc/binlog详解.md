@@ -20,6 +20,7 @@ show master status;
 | :--- | :--- | :--- | :--- | :--- |
 | mysql-bin.000001 | 154 |  |  |  |  
 
+### 2.1 通过重启mysql服务生成新的binlog文件
 每当我们重启mysql服务一次，会自动生成一个binlog文件，我们重启完毕之后执行相同的命令
 ```mysql
 show master status;
@@ -29,3 +30,13 @@ show master status;
 | mysql-bin.000002 | 154 |  |  |  |  
 
 存放binlog的目录下也多了这么一个文件。
+
+### 2.2 手动生成新的binlog文件
+我们也可以手动刷新binlog文件，通过flush logs来创建一个binlog文件。  
+```mysql
+flush logs;  
+show master status;
+```
+| File | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
+| :--- | :--- | :--- | :--- | :--- |
+| mysql-bin.000003 | 154 |  |  |  |  
