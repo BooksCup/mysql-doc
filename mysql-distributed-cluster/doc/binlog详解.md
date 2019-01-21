@@ -40,3 +40,13 @@ show master status;
 | File | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
 | :--- | :--- | :--- | :--- | :--- |
 | mysql-bin.000003 | 154 |  |  |  |  
+
+### 2.3 重置binlog文件  
+如果我们想把这些文件全部清空，可以使用reset master来处理。  
+```mysql
+reset master;  
+show master status;
+```
+| File | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
+| :--- | :--- | :--- | :--- | :--- |
+| mysql-bin.000001 | 154 |  |  |  |  
