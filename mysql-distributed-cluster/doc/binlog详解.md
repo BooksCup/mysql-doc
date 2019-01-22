@@ -54,4 +54,12 @@ show master status;
 ### 2.4 查看binlog日志
 ```
 mysqlbinlog mysql-bin.000001
-```
+```  
+
+## 3 总结  
+1.binlog文件会随着服务的启动而创建一个新文件  
+2.通过flush logs可以手动刷新日志，生成一个新的binlog文件  
+3.通过show master status可以查看binlog的状态    
+4.通过reset master可以清空binlog日志文件  
+5.通过mysqlbinlog工具可以查看binlog日志的内容  
+6.通过执行dml, mysql会自动记录binlog  
