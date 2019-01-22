@@ -1,5 +1,14 @@
 # binlog详解  
-## 1 查看binlog文件的位置
+## 1 概念
+### 1.1 binlog的三种模式
+#### 1.1.1 ROW
+日志会记录成每一行数据被修改成的形式，然后在slave端再对相同的数据进行修改，只记录要修改的数据，只有value，不会有mysql多表关联的情况。  
+优点: 在row模式下，binlog中可以不记录执行的sql语句的上下文相关信息，仅仅需要记录哪一条记录被修改了，修改成什么样了，
+所以row的日志内容会非常清楚的记录下每一行数据修改的细节，非常容易理解。
+而且不会出现在某些特定情况下的存储过程，函数和触发器在调用或触发时无法被正确复制的问题。
+
+
+## 2 查看binlog文件的位置
 ```mysql
 show variables like '%log_bin%';
 ```
@@ -12,7 +21,7 @@ show variables like '%log_bin%';
 | log_bin_use_v1_row_events | OFF | 
 | sql_log_bin | ON |  
 
-## 2 查看当前mysql的binlog情况
+## 3 查看当前mysql的binlog情况
 ```mysql
 show master status;
 ```
@@ -20,7 +29,7 @@ show master status;
 | :--- | :--- | :--- | :--- | :--- |
 | mysql-bin.000001 | 154 |  |  |  |  
 
-### 2.1 通过重启mysql服务生成新的binlog文件
+### 3.1 通过重启mysql服务生成新的binlog文件
 每当我们重启mysql服务一次，会自动生成一个binlog文件，我们重启完毕之后执行相同的命令
 ```mysql
 show master status;
@@ -31,7 +40,7 @@ show master status;
 
 存放binlog的目录下也多了这么一个文件。
 
-### 2.2 手动生成新的binlog文件
+### 3.2 手动生成新的binlog文件
 我们也可以手动刷新binlog文件，通过flush logs来创建一个binlog文件。  
 ```mysql
 flush logs;  
@@ -41,7 +50,7 @@ show master status;
 | :--- | :--- | :--- | :--- | :--- |
 | mysql-bin.000003 | 154 |  |  |  |  
 
-### 2.3 重置binlog文件  
+### 3.3 重置binlog文件  
 如果我们想把这些文件全部清空，可以使用reset master来处理。  
 ```mysql
 reset master;  
@@ -51,12 +60,12 @@ show master status;
 | :--- | :--- | :--- | :--- | :--- |
 | mysql-bin.000001 | 154 |  |  |  |  
 
-### 2.4 查看binlog日志
+### 3.4 查看binlog日志
 ```
 mysqlbinlog mysql-bin.000001
 ```  
 
-## 3 总结  
+## 4 总结  
 1.binlog文件会随着服务的启动而创建一个新文件  
 2.通过flush logs可以手动刷新日志，生成一个新的binlog文件  
 3.通过show master status可以查看binlog的状态    
