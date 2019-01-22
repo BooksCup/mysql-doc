@@ -1,5 +1,5 @@
 # binlog详解  
-## 1.查看binlog文件的位置
+## 1 查看binlog文件的位置
 ```mysql
 show variables like '%log_bin%';
 ```
@@ -12,7 +12,7 @@ show variables like '%log_bin%';
 | log_bin_use_v1_row_events | OFF | 
 | sql_log_bin | ON |  
 
-## 2.查看当前mysql的binlog情况
+## 2 查看当前mysql的binlog情况
 ```mysql
 show master status;
 ```
@@ -50,3 +50,8 @@ show master status;
 | File | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
 | :--- | :--- | :--- | :--- | :--- |
 | mysql-bin.000001 | 154 |  |  |  |  
+
+### 2.4 查看binlog日志
+```
+mysqlbinlog mysql-bin.000001
+```
