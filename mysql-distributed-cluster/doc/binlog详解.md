@@ -1,7 +1,7 @@
 # binlog详解  
 ## 1 概念
 ### 1.1 binlog的三种模式
-#### 1.1.1 ROW模式
+#### 1.1.1 row模式
 日志会记录成每一行数据被修改成的形式，然后在slave端再对相同的数据进行修改，只记录要修改的数据，只有value，不会有mysql多表关联的情况。  
 优点: 在row模式下，binlog中可以不记录执行的sql语句的上下文相关信息，仅仅需要记录哪一条记录被修改了，修改成什么样了，
 所以row的日志内容会非常清楚的记录下每一行数据修改的细节，非常容易理解。
@@ -19,7 +19,39 @@
 使得MySQL的复制遇到了不少的挑战，自然复制的时候涉及到的内容越复杂，BUG也容易出现。  
 在statement模式下，目前已经发现不少情况会造成MySQL的复制出现问题，主要是修改数据的时候使用了某些特定的函数或者功能。
 比如: sleep()函数在有些版本中就不能直接复制，在存储过程中使用了last_insert_id()函数，可能会使slave和master上得到不一致的id等等。
-由于row level是基于每一行来记录的变化，所以不会出现类似的问题。
+由于row level是基于每一行来记录的变化，所以不会出现类似的问题。  
+
+#### 1.1.3 mixed模式
+从官方文档中看到，之前的MySQL一直都只有基于statement的复制模式，知道5.1.5版本的MySQL才开始支持row模式。
+从5.0开始，MySQL的复制已经解决了大量老版本中出现的无法正确复制的问题。
+但是由于存储过程的出现，给MySQL replication又带来了更大的挑战。
+另外，看到官方文档说，从5.1.8版本开始，MySQL提供了除statement和row之外的第三种模式：mixed，实际上就是前两种模式的结合。
+在mixed模式下，MySQL会根据执行的每一条具体的sql语句来区分对待记录的日志形式，也就是在statement和row之间选择一种。
+新版本中的statement还是和以前一样，仅仅记录执行的语句。
+而新版本的MySQL中对row模式也做了优化，并不是所有的修改都会以row模式来记录，比如遇到表结构变更的时候就会以statement模式来记录，
+如果sql语句确实是update或者delete等修改数据的语句，那么还是会记录所有行的变更。  
+
+#### 1.1.4 binlog三种模式的总结
+row:  
+优点: 记录数据详细(每行)，主从一致  
+缺点: 占用大量的磁盘空间，降低了磁盘的性能  
+100w条记录  
+update test set name = 'tiny';  
+binlog里面就有100w条 update test set name = 'tiny';语句  
+
+statement:  
+优点: 记录的简单，内容少  
+缺点: 可能导致主从不一致  
+100w条记录  
+update test set name = 'tiny';  
+binlog里面就只有1条 update test set name = 'tiny';语句  
+
+mixed:  
+100w条记录  
+update test set name = 'tiny';  
+binlog里面就只有1条 update test set name='tiny';  
+对于函数，触发器，存储过程  
+会自动的使用row模式  
 
 ## 2 查看binlog文件的位置
 ```mysql
