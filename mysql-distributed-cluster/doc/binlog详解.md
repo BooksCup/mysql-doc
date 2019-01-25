@@ -1,3 +1,17 @@
+- [binlog详解](#binlog详解)  
+    - [1 binlog的三种模式](#1-binlog的三种模式)  
+        - [1.1 row模式](#11-row模式)  
+        - [1.2 statement模式](#12-statement模式)  
+        - [1.3 mixed模式](#13-mixed模式)  
+        - [1.4 binlog三种模式的总结](#14-binlog三种模式的总结)  
+    - [2 查看binlog文件的位置](#2-查看binlog文件的位置)  
+    - [3 查看当前mysql的binlog情况](#3-查看当前mysql的binlog情况)  
+        - [3.1 通过重启mysql服务生成新的binlog文件](#31-通过重启mysql服务生成新的binlog文件)  
+        - [3.2 手动生成新的binlog文件](#32-手动生成新的binlog文件)  
+        - [3.3 重置binlog文件](#33-重置binlog文件)  
+        - [3.4 查看binlog日志](#34-查看binlog日志)    
+    - [4 总结](#4-总结)  
+
 # binlog详解  
 ## 1 binlog的三种模式
 ### 1.1 row模式
